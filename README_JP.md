@@ -8,6 +8,8 @@
 [![zhihu](https://img.shields.io/static/v1?label=知乎&message=知乎&color=blue)](https://zhuanlan.zhihu.com/p/638254028)
 [![Spaces](https://img.shields.io/badge/🤗-Open%20in%20Spaces-blue)](https://huggingface.co/spaces/TheEeeeLin/HivisionIDPhotos)
 
+<a href="https://trendshift.io/repositories/11622" target="_blank"><img src="https://trendshift.io/api/badge/repositories/11622" alt="Zeyi-Lin%2FHivisionIDPhotos | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+
 <img src="assets/demoImage.png" width=900>
 </div>
 
@@ -23,7 +25,7 @@
 
 - オンラインデモ： [![SwanHub Demo](https://img.shields.io/static/v1?label=Demo&message=SwanHub%20Demo&color=blue)](https://swanhub.co/ZeYiLin/HivisionIDPhotos/demo)、[![Spaces](https://img.shields.io/badge/🤗-Open%20in%20Spaces-blue)](https://huggingface.co/spaces/TheEeeeLin/HivisionIDPhotos)
 
-- 2024.9.2: **写真の KB サイズを調整して**を更新
+- 2024.9.2: **写真の KB サイズを調整して**を更新，[DockerHub](https://hub.docker.com/r/linzeyi/hivision_idphotos/tags)
 - 2023.12.1: **API デプロイメント（fastapi ベース）**を更新
 - 2023.6.20: **プリセットサイズメニュー**
 - 2023.6.19: **レイアウト写真**を更新
@@ -72,7 +74,9 @@ git clone https://github.com/Zeyi-Lin/HivisionIDPhotos.git
 cd  HivisionIDPhotos
 ```
 
-**2. 依存パッケージをインストール**
+**2. (大切です) 依存パッケージをインストール**
+
+> conda を使用して Python 3.10 仮想環境を作成した後、次のコマンドを実行することがお勧めです。
 
 ```bash
 pip install -r requirements.txt
@@ -128,20 +132,37 @@ python requests_api.py -u http://127.0.0.1:8080 -t generate_layout_photos -i ./i
 
 ## 1. イメージの取得またはビルド
 
-**イメージの取得：**
+> 以下の方法から 1 つを選択してください
 
-> このイメージは ARM アーキテクチャマシン（例：Mac M1）で構築されており、x86 アーキテクチャマシンを使用する場合は Dockerfile を使用してください。
+**方法その 1 です：イメージの取得：**
 
 ```bash
 docker pull linzeyi/hivision_idphotos:v1
+docker tag linzeyi/hivision_idphotos:v1 hivision_idphotos
 ```
 
-**Dockrfile によるイメージの構築：**
+**方法その 2 です：Dockrfile によるイメージの構築：**
+
+> 次の 3 つの方法から 1 つを選択してください
 
 [hivision_modnet.onnx](https://github.com/Zeyi-Lin/HivisionIDPhotos/releases/tag/pretrained-model)というモデルの重みファイルがルートディレクトリに配置されていることを確認した後、次のコマンドを実行します。
 
 ```bash
 docker build -t hivision_idphotos .
+```
+
+**方法その 3 です：Docker Compose:**
+
+モデルのウェイトファイル[hivision_modnet.onnx](https://github.com/Zeyi-Lin/HivisionIDPhotos/releases/tag/pretrained-model)がルートディレクトリに置かれていることを確認したら、ルートディレクトリで実行します：
+
+```bash
+docker compose build
+```
+
+イメージがパッケージ化されたら、以下のコマンドを実行して Gradio サービスを起動する：
+
+```bash
+docker compose up -d
 ```
 
 ## 2. Gradio Demo の実行
@@ -168,8 +189,29 @@ docker run -p 8080:8080 hivision_idphotos python3 deploy_api.py
 
 # 📖 参考プロジェクト
 
-1. MTCNN: https://github.com/ipazc/mtcnn
-2. ModNet: https://github.com/ZHKKKe/MODNet
+1. MTCNN:
+
+```bibtex
+@software{ipazc_mtcnn_2021,
+    author = {ipazc},
+    title = {{MTCNN}},
+    url = {https://github.com/ipazc/mtcnn},
+    year = {2021},
+    publisher = {GitHub}
+}
+```
+
+2. ModNet:
+
+```bibtex
+@software{zhkkke_modnet_2021,
+    author = {ZHKKKe},
+    title = {{ModNet}},
+    url = {https://github.com/ZHKKKe/MODNet},
+    year = {2021},
+    publisher = {GitHub}
+}
+```
 
 <br>
 
@@ -185,6 +227,14 @@ docker run -p 8080:8080 hivision_idphotos python3 deploy_api.py
 
 ご質問がある場合は、zeyi.lin@swanhub.co までメールでお問い合わせください。
 
+<br>
+
 # 貢献者
 
 [Zeyi-Lin](https://github.com/Zeyi-Lin)、[SAKURA-CAT](https://github.com/SAKURA-CAT)、[Feudalman](https://github.com/Feudalman)、[swpfY](https://github.com/swpfY)、[Kaikaikaifang](https://github.com/Kaikaikaifang)、[ShaohonChen](https://github.com/ShaohonChen)、[KashiwaByte](https://github.com/KashiwaByte)
+
+<br>
+
+# StarHistory
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Zeyi-Lin/HivisionIDPhotos&type=Date)](https://star-history.com/#Zeyi-Lin/HivisionIDPhotos&Date)

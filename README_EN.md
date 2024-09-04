@@ -8,6 +8,8 @@ English / [中文](README.md) / [日本語](README_JP.md)
 [![zhihu](https://img.shields.io/static/v1?label=知乎&message=zhihu&color=blue)](https://zhuanlan.zhihu.com/p/638254028)
 [![Spaces](https://img.shields.io/badge/🤗-Open%20in%20Spaces-blue)](https://huggingface.co/spaces/TheEeeeLin/HivisionIDPhotos)
 
+<a href="https://trendshift.io/repositories/11622" target="_blank"><img src="https://trendshift.io/api/badge/repositories/11622" alt="Zeyi-Lin%2FHivisionIDPhotos | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+
 <img src="assets/demoImage.png" width=900>
 </div>
 
@@ -17,7 +19,7 @@ English / [中文](README.md) / [日本語](README_JP.md)
 
 - Online Demo: [![SwanHub Demo](https://swanhub.co/git/repo/SwanHub%2FAuto-README/file/preview?ref=main&path=swanhub.svg)](https://swanhub.co/ZeYiLin/HivisionIDPhotos/demo)、[![Spaces](https://img.shields.io/badge/🤗-Open%20in%20Spaces-blue)](https://huggingface.co/spaces/TheEeeeLin/HivisionIDPhotos)
 
-- 2024.9.2: Update **Adjusted photo KB size**
+- 2024.9.2: Update **Adjusted photo KB size**，[DockerHub](https://hub.docker.com/r/linzeyi/hivision_idphotos/tags)
 - 2023.12.1: Update **API deployment (based on fastapi)**
 - 2023.6.20: Update **Preset size menu**
 - 2023.6.19: Update **Layout photos**
@@ -68,7 +70,9 @@ git clone https://github.com/Zeyi-Lin/HivisionIDPhotos.git
 cd  HivisionIDPhotos
 ```
 
-2. Install dependent packages
+2. (Important) Install dependent packages
+
+> It is recommended to create a Python 3.10 virtual environment with conda and then execute the following command.
 
 ```
 pip install -r requirements.txt
@@ -87,6 +91,40 @@ python app.py
 ```
 
 Running the program will generate a local web page, where operations and interactions with ID photos can be completed.
+
+<br>
+
+# 🚀 Python Inference
+
+## 1. ID Photo Production
+
+Input 1 photo, get 1 standard ID photo and 1 HD ID photo in a transparent PNG with 4 channels.
+
+```python
+
+python inference.py -i images/test.jpg -o ./idphoto.png -s '(413,295)'
+
+```
+
+## 2. Add Background Color
+
+Input 1 transparent PNG with 4 channels, get an image with added background color.
+
+```python
+
+python inference.py -t add_background -i ./idphoto.png -o ./idhoto_ab.jpg -c '(0,0,0)' -k 30
+
+```
+
+## 3. Obtain Six-Inch Layout Photo
+
+Input 1 photo with 3 channels, obtain one six-inch layout photo.
+
+```python
+
+python inference.py -t generate_layout_photos -i ./idhoto_ab.jpg -o ./idhoto_layout.jpg -s '(413,295)' -k 200
+
+```
 
 <br>
 
@@ -124,20 +162,35 @@ python requests_api.py -u http://127.0.0.1:8080 -t generate_layout_photos -i ./i
 
 ## 1. Pull or Build Image
 
-**Pull Image from DockerHub**
+> Choose one of the following three methods
 
-> This image is built on a machine with ARM architecture (e.g. Mac M1). If you want to use it on a machine with x86 architecture, please use Dockerfile.
+**Method 1 - Pull Image from DockerHub:**
 
 ```bash
 docker pull linzeyi/hivision_idphotos:v1
+docker tag linzeyi/hivision_idphotos:v1 hivision_idphotos
 ```
 
-**Build Image**
+**Method 2 - Build Image:**
 
 After ensuring that the model weight file [hivision_modnet.onnx](https://github.com/Zeyi-Lin/HivisionIDPhotos/releases/tag/pretrained-model) is placed in the root directory, execute in the root directory:
 
 ```bash
 docker build -t hivision_idphotos .
+```
+
+**Method 3 - Docker Compose:**
+
+After ensuring that the model weight file [hivision_modnet.onnx](https://github.com/Zeyi-Lin/HivisionIDPhotos/releases/tag/pretrained-model) is placed in the root directory, execute in the root directory:
+
+```bash
+docker compose build
+```
+
+After the image is packaged, run the following command to start the Gradio service:
+
+```bash
+docker compose up -d
 ```
 
 ## 2. Run the Gradio Demo
@@ -158,10 +211,35 @@ docker run -p 8080:8080 hivision_idphotos python3 deploy_api.py
 
 <br>
 
+# 🌲 Friendship link
+
+- [HivisionIDPhotos-windows-GUI](https://github.com/zhaoyun0071/HivisionIDPhotos-windows-GUI)
+
 # 📖 Reference Projects
 
-1. MTCNN: https://github.com/ipazc/mtcnn
-2. ModNet: https://github.com/ZHKKKe/MODNet
+1. MTCNN:
+
+```bibtex
+@software{ipazc_mtcnn_2021,
+    author = {ipazc},
+    title = {{MTCNN}},
+    url = {https://github.com/ipazc/mtcnn},
+    year = {2021},
+    publisher = {GitHub}
+}
+```
+
+2. ModNet:
+
+```bibtex
+@software{zhkkke_modnet_2021,
+    author = {ZHKKKe},
+    title = {{ModNet}},
+    url = {https://github.com/ZHKKKe/MODNet},
+    year = {2021},
+    publisher = {GitHub}
+}
+```
 
 <br>
 
@@ -179,6 +257,14 @@ If you have any questions, please email Zeyi.lin@swanhub.co
 
 Copyright © 2023, ZeYiLin. All Rights Reserved.
 
+<br>
+
 # Contributor
 
 [Zeyi-Lin](https://github.com/Zeyi-Lin)、[SAKURA-CAT](https://github.com/SAKURA-CAT)、[Feudalman](https://github.com/Feudalman)、[swpfY](https://github.com/swpfY)、[Kaikaikaifang](https://github.com/Kaikaikaifang)、[ShaohonChen](https://github.com/ShaohonChen)、[KashiwaByte](https://github.com/KashiwaByte)
+
+<br>
+
+# StarHistory
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Zeyi-Lin/HivisionIDPhotos&type=Date)](https://star-history.com/#Zeyi-Lin/HivisionIDPhotos&Date)

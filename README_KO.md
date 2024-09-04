@@ -1,6 +1,3 @@
-以下是韩文版 README:
-
-````markdown
 <div align="center">
 <h1>HivisionIDPhoto</h1>
 
@@ -10,6 +7,8 @@
 [![SwanHub Demo](https://swanhub.co/git/repo/SwanHub%2FAuto-README/file/preview?ref=main&path=swanhub.svg)](https://swanhub.co/ZeYiLin/HivisionIDPhotos/demo)
 [![zhihu](https://img.shields.io/static/v1?label=知乎&message=知乎&color=blue)](https://zhuanlan.zhihu.com/p/638254028)
 [![Spaces](https://img.shields.io/badge/🤗-Open%20in%20Spaces-blue)](https://huggingface.co/spaces/TheEeeeLin/HivisionIDPhotos)
+
+<a href="https://trendshift.io/repositories/11622" target="_blank"><img src="https://trendshift.io/api/badge/repositories/11622" alt="Zeyi-Lin%2FHivisionIDPhotos | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
 <img src="assets/demoImage.png" width=900>
 </div>
@@ -25,7 +24,7 @@
 # 🤩 프로젝트 업데이트
 
 - 온라인 체험: [![SwanHub Demo](https://img.shields.io/static/v1?label=Demo&message=SwanHub%20Demo&color=blue)](https://swanhub.co/ZeYiLin/HivisionIDPhotos/demo)、[![Spaces](https://img.shields.io/badge/🤗-Open%20in%20Spaces-blue)](https://huggingface.co/spaces/TheEeeeLin/HivisionIDPhotos)
-- 2024.9.2: **사진 KB 크기 조정** 업데이트
+- 2024.9.2: **사진 KB 크기 조정** 업데이트，[DockerHub](https://hub.docker.com/r/linzeyi/hivision_idphotos/tags)
 - 2023.12.1: **API 배포(fastapi 기반)** 업데이트
 - 2023.6.20: **미리 설정된 사이즈 메뉴** 업데이트
 - 2023.6.19: **레이아웃 사진** 업데이트
@@ -73,9 +72,10 @@ HivisionIDPhoto가 유용하셨다면, 이 저장소에 별을 달거나 친구�
 git clone https://github.com/Zeyi-Lin/HivisionIDPhotos.git
 cd  HivisionIDPhotos
 ```
-````
 
-**2. 의존성 설치**
+**2. (중요함) 의존성 설치**
+
+> conda를 사용하여 Python 3.10 가상 환경을 만든 다음 다음 명령을 실행하는 것이 좋습니다.
 
 ```bash
 pip install -r requirements.txt
@@ -131,20 +131,35 @@ python requests_api.py -u http://127.0.0.1:8080 -t generate_layout_photos -i ./i
 
 ## 1. 이미지 가져오기 또는 빌드
 
-**이미지 가져오기:**
+> 다음 3가지 방법 중 하나를 선택하십시오.
 
-> 이 이미지는 ARM 아키텍처 머신(Mac M1 등)에서 빌드되었습니다. x86 아키텍처 머신에서 사용할 경우 Dockerfile을 사용하여 빌드하세요.
+**방법 1：이미지 가져오기:**
 
 ```bash
 docker pull linzeyi/hivision_idphotos:v1
+docker tag linzeyi/hivision_idphotos:v1 hivision_idphotos
 ```
 
-**Dockerfile로 이미지 빌드:**
+**방법 2：Dockerfile로 이미지 빌드:**
 
 모델 가중치 파일 [hivision_modnet.onnx](https://github.com/Zeyi-Lin/HivisionIDPhotos/releases/tag/pretrained-model)을 루트 디렉토리에 놓고, 루트 디렉토리에서 다음 명령어를 실행하세요:
 
 ```bash
 docker build -t hivision_idphotos .
+```
+
+**방법 3：Docker Compose:**
+
+모델 가중치 파일 [hivision_modnet.onnx](https://github.com/Zeyi-Lin/HivisionIDPhotos/releases/tag/pretrained-model)가 루트 디렉터리에 있는지 확인한 후 루트 디렉터리에서 실행합니다:
+
+```bash
+도커 컴포즈 빌드
+```
+
+이미지 패키징이 완료되면 다음 명령어를 실행하여 Gradio 서비스를 시작합니다:
+
+```bash
+docker compose up -d
 ```
 
 ## 2. Gradio 데모 실행
@@ -167,8 +182,29 @@ docker run -p 8080:8080 hivision_idphotos python3 deploy_api.py
 
 # 📖 프로젝트 인용
 
-1. MTCNN: https://github.com/ipazc/mtcnn
-2. ModNet: https://github.com/ZHKKKe/MODNet
+1. MTCNN:
+
+```bibtex
+@software{ipazc_mtcnn_2021,
+    author = {ipazc},
+    title = {{MTCNN}},
+    url = {https://github.com/ipazc/mtcnn},
+    year = {2021},
+    publisher = {GitHub}
+}
+```
+
+2. ModNet:
+
+```bibtex
+@software{zhkkke_modnet_2021,
+    author = {ZHKKKe},
+    title = {{ModNet}},
+    url = {https://github.com/ZHKKKe/MODNet},
+    year = {2021},
+    publisher = {GitHub}
+}
+```
 
 <br>
 
@@ -176,16 +212,22 @@ docker run -p 8080:8080 hivision_idphotos python3 deploy_api.py
 
 **1. 미리 설정된 사이즈를 어떻게 수정하나요?**
 
-[size_list_CN.csv](size_list_CN.csv)을 수정한 후 app.py를 다시 실행하세요. 첫 번째 열은 사이즈 이름, 두 번째 열은 높이, 세 번째 열은 너비입니다.
+[size_list_CN.csv](size_list_CN.csv)을 수정한 후 app.py 를 다시 실행하세요. 첫 번째 열은 사이즈 이름, 두 번째 열은 높이, 세 번째 열은 너비입니다.
 
 <br>
 
 # 📧 문의하기
 
-문의사항이 있으시면 zeyi.lin@swanhub.co로 이메일을 보내주세요.
+문의사항이 있으시면 zeyi.lin@swanhub.co 로 이메일을 보내주세요.
 
 <br>
 
 # 기여자
 
 [Zeyi-Lin](https://github.com/Zeyi-Lin)、[SAKURA-CAT](https://github.com/SAKURA-CAT)、[Feudalman](https://github.com/Feudalman)、[swpfY](https://github.com/swpfY)、[Kaikaikaifang](https://github.com/Kaikaikaifang)、[ShaohonChen](https://github.com/ShaohonChen)、[KashiwaByte](https://github.com/KashiwaByte)
+
+<br>
+
+# StarHistory
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Zeyi-Lin/HivisionIDPhotos&type=Date)](https://star-history.com/#Zeyi-Lin/HivisionIDPhotos&Date)
